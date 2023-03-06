@@ -6,6 +6,7 @@ import 'package:tiktok_clone/features/discover/discover_screen.dart';
 import 'package:tiktok_clone/features/inbox/inbox_screen.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/nav_tab.dart';
 import 'package:tiktok_clone/features/main_navigation/widgets/post_video_button.dart';
+import 'package:tiktok_clone/features/user/user_profile_screen.dart';
 import 'package:tiktok_clone/features/videos/widgets/video_timeline_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
@@ -70,7 +71,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
           Offstage(
             //기본값이 모두숨김
             offstage: _selectedIndex != 4,
-            child: Container(),
+            child: const UserProfileScreen(),
           ),
         ],
       ),
