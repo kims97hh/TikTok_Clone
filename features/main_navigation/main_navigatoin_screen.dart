@@ -17,7 +17,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _selectedIndex = 1; // 앱시작시 초기 화면
+  int _selectedIndex = 0; // 앱시작시 초기 화면
   bool _onTapDown = false;
 
   void _onTap(int index) {

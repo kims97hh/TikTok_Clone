@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/settings/settings_screen.dart';
 import 'package:tiktok_clone/features/user/widgets/persistent_tab_bar.dart';
 
 class UserProfileScreen extends StatefulWidget {
@@ -12,6 +13,14 @@ class UserProfileScreen extends StatefulWidget {
 }
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
+  void _onGearPressed() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const SettingsScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -24,7 +33,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 title: const Text("hhk"),
                 actions: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: _onGearPressed,
                     icon: const FaIcon(
                       FontAwesomeIcons.gear,
                       size: Sizes.size20,
@@ -176,11 +185,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     crossAxisCount: 3,
                     crossAxisSpacing: Sizes.size2,
                     mainAxisSpacing: Sizes.size2,
-                    childAspectRatio: 9 / 14),
+                    childAspectRatio: 9 / 13.5),
                 itemBuilder: (context, index) => Column(
                   children: [
                     AspectRatio(
-                      aspectRatio: 9 / 14,
+                      aspectRatio: 9 / 13.5, //소숫점이 사용 가능!@
                       child: Stack(
                         alignment: Alignment.bottomLeft,
                         children: [
@@ -195,12 +204,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 left: Sizes.size8, bottom: Sizes.size3),
                             child: Row(
                               children: [
-                                const FaIcon(
-                                  FontAwesomeIcons.play,
+                                const Icon(
+                                  Icons.play_arrow_outlined,
                                   color: Colors.white,
-                                  size: Sizes.size16,
+                                  size: Sizes.size24,
                                 ),
-                                Gaps.h10,
+                                Gaps.h1,
                                 Text(
                                   "$index.1M",
                                   style: const TextStyle(

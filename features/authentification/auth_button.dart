@@ -37,7 +37,7 @@ class AuthButton extends StatelessWidget {
                 fontSize: Sizes.size16,
                 fontWeight: FontWeight.w600,
               ),
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.right,
             ),
           ],
         ),
