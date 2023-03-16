@@ -1,35 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
 import 'package:tiktok_clone/features/authentification/auth_button.dart';
 import 'package:tiktok_clone/features/authentification/widgets/login_screen.dart';
 import 'package:tiktok_clone/features/authentification/widgets/username_screen.dart';
+import 'package:tiktok_clone/features/utils.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 
 class SignUpScreen extends StatelessWidget {
+  static String routeURL = "/";
+  static String routeName = "signUp";
   const SignUpScreen({super.key});
 
-  void onLoginTap(BuildContext context) {
-    Navigator.of(context).push(
+  void onLoginTap(BuildContext context) async {
+    /* final result = await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => const LoginScreen(),
       ),
-    );
-  }
+    ); */
+    /*final result = await Navigator.of(context).pushNamed(LoginScreen.routeName);
+    print(result);*/
+    context
+        .push(LoginScreen.routeName); // .go 를 사용시 뒤로가기가 불가(android, ios 앱 only)
+  } //async, await 이용하여 result 값을 받는다.
 
   void onEmailtap(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => const UsernameScreen(),
-      ),
-    );
+    /* Navigator.of(context).push(
+      PageRouteBuilder(
+          transitionDuration: const Duration(seconds: 1),
+          reverseTransitionDuration: const Duration(seconds: 1),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const UsernameScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final offsetAnimation = Tween(
+              begin: const Offset(0, -1), //(-좌우, -위아래), 1=100%
+              end: Offset.zero, //원화면,정상화면
+            ).animate(animation);// pageBuilder 의 animation 또는 secondaryAnimation 은 "Animation<double>" 형식이므로, 요구하는 형식과 동일하여 그대로 사용할 수 있다.
+            final opacityAnimation = Tween(
+              begin: 0.5,
+              end: 1.0, // 더블형식 필수
+            ).animate(animation);
+            return SlideTransition(
+              position: offsetAnimation,
+              child: FadeTransition(
+                opacity: opacityAnimation,
+                child: child,
+              ),
+            );
+          }),
+    ); */
+    context.pushNamed(UsernameScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(
       builder: (context, orientation) {
-        print(orientation);
         return Scaffold(
           body: SafeArea(
             child: Padding(
@@ -39,52 +67,56 @@ class SignUpScreen extends StatelessWidget {
               child: Column(
                 children: [
                   Gaps.v80,
-                  const Text(
-                    "Sign up for TicTok",
-                    style: TextStyle(
-                      fontSize: Sizes.size24,
-                      fontWeight: FontWeight.w700,
-                    ),
+                  Text(
+                    S.of(context).signUpTitle("TikTok", DateTime.now()),
+                    style: const TextStyle(
+                        fontSize: Sizes.size24,
+                        fontWeight:
+                            FontWeight.w700), // "!" 는 정의 되어 있는 내용 , "?" null 허용
                   ),
                   Gaps.v20,
-                  const Text(
-                    "Create a profile, follow other accounts, make your own videos, and more.",
-                    style: TextStyle(
-                      fontSize: Sizes.size16,
-                      color: Colors.black45,
+                  Opacity(
+                    opacity:
+                        0.7, // => 흰색 + 0.7(opacity) => light mode, Dark mode 공통
+                    child: Text(
+                      S.of(context).signUpsubTitle(
+                          1), // pluralization 복수형('s) 에 따른 번역 "변수, plural, =0{번역} =1... other{번역}"
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium, // option#1 => color: isDarkMode(context) ? Colors.grey.shade300: Colors.black45,
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
                   ),
                   Gaps.v40,
                   if (orientation == Orientation.portrait) ...[
                     //"...[]" collection if 문으로 List를 if로 사용할 수 있다.
                     GestureDetector(
                       onTap: () => onEmailtap(context),
-                      child: const AuthButton(
-                        icon: FaIcon(FontAwesomeIcons.user),
-                        text: 'Use email & password',
+                      child: AuthButton(
+                        icon: const FaIcon(FontAwesomeIcons.user),
+                        text: S.of(context).emailPasswordButton,
                       ),
                     ),
                     Gaps.v16,
-                    const AuthButton(
-                      icon: FaIcon(
+                    AuthButton(
+                      icon: const FaIcon(
                         FontAwesomeIcons.facebook,
                         color: Colors.blue,
                       ),
-                      text: 'continue with Facebook',
+                      text: S.of(context).faceBookButton,
                     ),
                     Gaps.v16,
-                    const AuthButton(
-                      icon: FaIcon(FontAwesomeIcons.apple),
-                      text: 'Continue with Apple',
+                    AuthButton(
+                      icon: const FaIcon(FontAwesomeIcons.apple),
+                      text: S.of(context).appleButton,
                     ),
                     Gaps.v16,
-                    const AuthButton(
-                      icon: FaIcon(
+                    AuthButton(
+                      icon: const FaIcon(
                         FontAwesomeIcons.google,
                         color: Colors.red,
                       ),
-                      text: 'Continue with Google',
+                      text: S.of(context).googleButton,
                     ),
                   ],
                   if (orientation == Orientation.landscape)
@@ -93,37 +125,37 @@ class SignUpScreen extends StatelessWidget {
                         Expanded(
                           child: GestureDetector(
                             onTap: () => onEmailtap(context),
-                            child: const AuthButton(
-                              icon: FaIcon(FontAwesomeIcons.user),
-                              text: 'Use email & password',
+                            child: AuthButton(
+                              icon: const FaIcon(FontAwesomeIcons.user),
+                              text: S.of(context).emailPasswordButton,
                             ),
                           ),
                         ),
                         Gaps.h16,
-                        const Expanded(
+                        Expanded(
                           child: AuthButton(
-                            icon: FaIcon(
+                            icon: const FaIcon(
                               FontAwesomeIcons.facebook,
                               color: Colors.blue,
                             ),
-                            text: 'continue with Facebook',
+                            text: S.of(context).faceBookButton,
                           ),
                         ),
                         Gaps.h16,
-                        const Expanded(
+                        Expanded(
                           child: AuthButton(
-                            icon: FaIcon(FontAwesomeIcons.apple),
-                            text: 'Continue with Apple',
+                            icon: const FaIcon(FontAwesomeIcons.apple),
+                            text: S.of(context).appleButton,
                           ),
                         ),
                         Gaps.h16,
-                        const Expanded(
+                        Expanded(
                           child: AuthButton(
-                            icon: FaIcon(
+                            icon: const FaIcon(
                               FontAwesomeIcons.google,
                               color: Colors.red,
                             ),
-                            text: 'Continue with Google',
+                            text: S.of(context).googleButton,
                           ),
                         ),
                       ],
@@ -132,19 +164,19 @@ class SignUpScreen extends StatelessWidget {
               ),
             ),
           ),
-          bottomNavigationBar: BottomAppBar(
-            elevation: 2,
-            color: Colors.grey.shade50,
+          bottomNavigationBar: Container(
+            color: isDarkMode(context)
+                ? null
+                : Colors.grey.shade50, //null 값이면 Themdata를 이용한다.
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: Sizes.size32,
-              ),
+              padding: const EdgeInsets.only(
+                  top: Sizes.size32, bottom: Sizes.size64),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Already have an account?',
-                    style: TextStyle(
+                  Text(
+                    S.of(context).alreadyHaveAnAccount,
+                    style: const TextStyle(
                         fontSize: Sizes.size16,
                         color: Colors.black54,
                         fontWeight: FontWeight.w600),
@@ -153,7 +185,8 @@ class SignUpScreen extends StatelessWidget {
                   GestureDetector(
                     onTap: () => onLoginTap(context),
                     child: Text(
-                      'Log in',
+                      S.of(context).logIn(
+                          "female"), // "{변수, select, 인수{번역} ... other{번역}"
                       style: TextStyle(
                           fontSize: Sizes.size16,
                           color: Theme.of(context).primaryColor,

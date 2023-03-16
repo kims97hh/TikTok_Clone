@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/utils.dart';
+import 'package:tiktok_clone/generated/l10n.dart';
 
 class VideoCommnets extends StatefulWidget {
   const VideoCommnets({super.key});
@@ -35,6 +37,7 @@ class _VideoCommnetsState extends State<VideoCommnets> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final isDark = isDarkMode(context);
     return Container(
       height: size.height * 0.75,
       clipBehavior: Clip.hardEdge,
@@ -42,11 +45,13 @@ class _VideoCommnetsState extends State<VideoCommnets> {
         borderRadius: BorderRadius.circular(Sizes.size14),
       ),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade50,
+        backgroundColor: isDark ? null : Colors.grey.shade50,
         appBar: AppBar(
-          backgroundColor: Colors.grey.shade50,
+          backgroundColor: isDark ? null : Colors.grey.shade50,
           automaticallyImplyLeading: false,
-          title: const Text("22796 Comments"),
+          title: Text(S
+              .of(context)
+              .commentTitle(2, 2)), // 숫자단축과, 복수형을 표시하기위해 어쩔수 없이 2개 인자를 사용한다
           actions: [
             IconButton(
               onPressed: _onClosePressed,
@@ -72,9 +77,10 @@ class _VideoCommnetsState extends State<VideoCommnets> {
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
+                      CircleAvatar(
                         radius: 18,
-                        child: Text("data"),
+                        backgroundColor: isDark ? Colors.grey.shade500 : null,
+                        child: const Text("data"),
                       ),
                       Gaps.h10,
                       Expanded(
@@ -125,12 +131,14 @@ class _VideoCommnetsState extends State<VideoCommnets> {
                 bottom: 0,
                 width: size
                     .width, //Positioned 의 width 는 장치의 너비를 요청하는데, MediaQuery 에서 장치의 정보를 받을 수 있다.
-                child: BottomAppBar(
-                  color: Colors.white,
+                child: Container(
+                  color: Theme.of(context).scaffoldBackgroundColor,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: Sizes.size10,
-                      horizontal: Sizes.size12,
+                    padding: const EdgeInsets.only(
+                      top: Sizes.size10,
+                      left: Sizes.size16,
+                      right: Sizes.size16,
+                      bottom: Sizes.size24,
                     ),
                     child: Row(
                       children: [
@@ -162,7 +170,9 @@ class _VideoCommnetsState extends State<VideoCommnets> {
                                   borderSide: BorderSide.none,
                                 ),
                                 filled: true,
-                                fillColor: Colors.grey.shade200,
+                                fillColor: isDark
+                                    ? Colors.grey.shade800
+                                    : Colors.grey.shade200,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: Sizes.size10,
                                 ),

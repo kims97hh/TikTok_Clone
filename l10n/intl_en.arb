@@ -1,0 +1,64 @@
+{
+  "signUpTitle": "Sign up for {nameOfTheApp} {when}",
+  "@signUpTitle": {
+    "description": "The title people see when they open the app for the first time.",
+    "placeholders": {
+      "nameOfTheApp": {
+        "type": "String",
+        "example": "TikTok"
+      },
+      "when":{
+        "type":"DateTime",
+        "format":"yQQQQ / LLLL 💕 Hm",
+        "isCustomDateFormat":"true"
+      }
+    }
+  },
+  "loginTitle": "Log into your {nameOfTheApp} account",
+  "@loginTitle": {
+    "description": "The title people see when they open the log in screen.",
+    "placeholders": {
+      "nameOfTheApp": {
+        "type": "String",
+        "example": "TikTok"
+      }
+    }
+  },
+  "signUpsubTitle": "Create a profile, follow other accounts, make your own {videocount, plural, =0{no videos} =1{video} other{videos}}, and more.",
+  "emailPasswordButton": "Use email & password",
+  "faceBookButton": "continue with Facebook",
+  "appleButton": "Continue with Apple",
+  "googleButton": "Continue with Google",
+  "alreadyHaveAnAccount": "Already have an account?",
+  "logIn": "Log in {gender, select, male{sir} female{madam} other{human}}",
+  "likeCount": "{potato}",
+  "@likeCount": {
+    "description": "Anything you want",
+    "placeholders": {
+      "potato": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "commentCount": "{potato}",
+  "@commentCount": {
+    "description": "Anything you want",
+    "placeholders": {
+      "potato": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  },
+  "commentTitle": "{value} {value2, plural, =1{Comment} other{Comments}}",
+  "@commentTitle": {
+    "description": "Anything you want",
+    "placeholders": {
+      "value": {
+        "type": "int",
+        "format": "compact"
+      }
+    }
+  }
+}

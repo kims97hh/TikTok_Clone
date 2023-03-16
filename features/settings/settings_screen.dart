@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -51,12 +52,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 firstDate: DateTime(1980),
                 lastDate: DateTime(2030),
               );
-              print(date);
+              if (kDebugMode) {
+                print(date);
+              }
+              if (!mounted) return;
               final time = await showTimePicker(
                 context: context,
                 initialTime: TimeOfDay.now(),
               );
-              print(time);
+              if (kDebugMode) {
+                print(time);
+              }
+              if (!mounted) return;
               final booking = await showDateRangePicker(
                 context: context,
                 firstDate: DateTime(1980),
@@ -71,7 +78,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 },
               );
-              print(booking);
+              if (kDebugMode) {
+                print(booking);
+              }
             },
             title: const Text("What is your birthday?"),
           ),
@@ -80,22 +89,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             textColor: Colors.red,
             onTap: () {
               showCupertinoDialog(
-                  context: context,
-                  builder: (context) => CupertinoAlertDialog(
-                        title: const Text("are your sure?"),
-                        content: const Text("plz dont go"),
-                        actions: [
-                          CupertinoDialogAction(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("No"),
-                          ),
-                          CupertinoDialogAction(
-                            onPressed: () => Navigator.of(context).pop(),
-                            isDestructiveAction: true,
-                            child: const Text("Yes"),
-                          ),
-                        ],
-                      ));
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text("are your sure?"),
+                  content: const Text("plz dont go"),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("No"),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      isDestructiveAction: true,
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
           ListTile(
@@ -103,24 +113,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
             textColor: Colors.red,
             onTap: () {
               showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                        icon: const FaIcon(
-                          FontAwesomeIcons.skull,
-                        ),
-                        title: const Text("are your sure?"),
-                        content: const Text("plz dont go"),
-                        actions: [
-                          IconButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            icon: const FaIcon(FontAwesomeIcons.tiktok),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Yes"),
-                          ),
-                        ],
-                      ));
+                context: context,
+                builder: (context) => AlertDialog(
+                  icon: const FaIcon(
+                    FontAwesomeIcons.skull,
+                  ),
+                  title: const Text("are your sure?"),
+                  content: const Text("plz dont go"),
+                  actions: [
+                    IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: const FaIcon(FontAwesomeIcons.tiktok),
+                    ),
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
           ListTile(
@@ -128,22 +139,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             textColor: Colors.red,
             onTap: () {
               showCupertinoModalPopup(
-                  context: context,
-                  builder: (context) => CupertinoAlertDialog(
-                        title: const Text("are your sure?"),
-                        content: const Text("plz dont go"),
-                        actions: [
-                          CupertinoDialogAction(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("No"),
-                          ),
-                          CupertinoDialogAction(
-                            onPressed: () => Navigator.of(context).pop(),
-                            isDestructiveAction: true,
-                            child: const Text("Yes"),
-                          ),
-                        ],
-                      ));
+                context: context,
+                builder: (context) => CupertinoAlertDialog(
+                  title: const Text("are your sure?"),
+                  content: const Text("plz dont go"),
+                  actions: [
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("No"),
+                    ),
+                    CupertinoDialogAction(
+                      onPressed: () => Navigator.of(context).pop(),
+                      isDestructiveAction: true,
+                      child: const Text("Yes"),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
           ListTile(
@@ -151,24 +163,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
             textColor: Colors.red,
             onTap: () {
               showCupertinoDialog(
-                  // "showCupertion"+"Dialog" 는 외부 클릭 불가, +"ModalPopup" 은 외부 클릭시 해제 ,(ios 에서만 가능한듯, Android는 기본적으로 바깥쪽 선택시 해제됨)
-                  context: context,
-                  builder: (context) => CupertinoActionSheet(
-                        title: const Text("are your sure?"),
-                        message: const Text("plez don go"),
-                        actions: [
-                          CupertinoActionSheetAction(
-                            isDefaultAction: true, // 기본옵션(굵게)
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Not log out"),
-                          ),
-                          CupertinoActionSheetAction(
-                            isDestructiveAction: true, // 강조표시(red)
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("Yes plz"),
-                          ),
-                        ],
-                      ));
+                // "showCupertion"+"Dialog" 는 외부 클릭 불가, +"ModalPopup" 은 외부 클릭시 해제 ,(ios 에서만 가능한듯, Android는 기본적으로 바깥쪽 선택시 해제됨)
+                context: context,
+                builder: (context) => CupertinoActionSheet(
+                  title: const Text("are your sure?"),
+                  message: const Text("plez don go"),
+                  actions: [
+                    CupertinoActionSheetAction(
+                      isDefaultAction: true, // 기본옵션(굵게)
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Not log out"),
+                    ),
+                    CupertinoActionSheetAction(
+                      isDestructiveAction: true, // 강조표시(red)
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("Yes plz"),
+                    ),
+                  ],
+                ),
+              );
             },
           ),
           const AboutListTile(),
