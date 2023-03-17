@@ -63,6 +63,14 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
     initPermissions();
   }
 
+  void rePermission() {
+    setState(() {
+      _hasPermission = false;
+      _permissionAlert = false;
+    });
+    initPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +95,7 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
                         child: const Text("Back to Home"),
                       ),
                       TextButton(
-                        onPressed: () => openAppSettings(),
+                        onPressed: () => rePermission(),
                         child: const Text("Re-permissions"),
                       ),
                     ],
