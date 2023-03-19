@@ -13,9 +13,11 @@ class VideoRecordingScreen extends StatefulWidget {
   State<VideoRecordingScreen> createState() => _VideoRecordingScreenState();
 }
 
-class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
+class _VideoRecordingScreenState extends State<VideoRecordingScreen>
+    with WidgetsBindingObserver {
   bool _hasPermission = false;
   bool _permissionAlert = false;
+  int count = 0;
 
   late final CameraController _cameraController;
 
@@ -50,10 +52,40 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
       await initCamera();
       setState(() {}); // 카메라초기화후 await 동안 화면 재생성한다, (만약 하지 않으면 무한 대기)
     } else {
-      // await openAppSettings();
       setState(() {
         _permissionAlert = true;
       });
+    }
+  }
+
+  void rePermission() {
+    count = count + 1;
+    if (count < 2) {
+      setState(() {
+        _hasPermission = false;
+        _permissionAlert = false;
+      });
+      initPermissions();
+    } else {
+      openAppSettings();
+    }
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      final cameraGranted = await Permission.camera.isGranted;
+      final micGranted = await Permission.microphone.isGranted;
+      if (cameraGranted && micGranted) {
+        _hasPermission = true;
+        _permissionAlert = false;
+        await initCamera();
+        setState(() {});
+      } else {
+        _hasPermission = false;
+        _permissionAlert = true;
+        setState(() {});
+      }
     }
   }
 
@@ -61,14 +93,13 @@ class _VideoRecordingScreenState extends State<VideoRecordingScreen> {
   void initState() {
     super.initState();
     initPermissions();
+    WidgetsBinding.instance.addObserver(this);
   }
 
-  void rePermission() {
-    setState(() {
-      _hasPermission = false;
-      _permissionAlert = false;
-    });
-    initPermissions();
+  @override
+  void dispose() {
+    _cameraController.dispose();
+    super.dispose();
   }
 
   @override
