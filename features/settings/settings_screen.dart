@@ -1,29 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:tiktok_clone/common/widgets/video_configration/videdo_config.dart';
+import 'package:tiktok_clone/features/authentification/repos/authentication_repo.dart';
+import 'package:tiktok_clone/features/videos/view_models/playback_config_vm.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notification = false;
-
-  void _onNoficationChange(bool? newValue) {
-    if (newValue == null) {
-      return;
-    }
-    setState(() {
-      _notification = newValue;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Settings"),
@@ -31,17 +20,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         children: [
           SwitchListTile.adaptive(
+            value: ref
+                .watch(playbackConfigProvider)
+                .muted, // watch<>() 변화값참조 , read<>()는 고정값참조
+            onChanged: (value) =>
+                ref.read(playbackConfigProvider.notifier).setMuted(value),
+            title: const Text("Mute Video"),
+            subtitle: const Text("Videos muted by default."),
+          ),
+          SwitchListTile.adaptive(
+            value: ref
+                .watch(playbackConfigProvider)
+                .autoplay, // watch<>() 변화값참조 , read<>()는 고정값참조
+            onChanged: (value) =>
+                ref.read(playbackConfigProvider.notifier).setAutoplay(value),
+            title: const Text("Auto Play"),
+            subtitle: const Text("Videos will start playing automatically."),
+          ),
+          ValueListenableBuilder(
+            // ChangeNotifier{} 사용시 ValueListenableBuilder() 를 사용하여 Widget 에서 데이터 변화를 감지하여 전송. 또한 only AnimatedBuilder() 만 rebuild 된다. 효율장점
+            valueListenable: darkMode,
+            builder: (context, value, child) => SwitchListTile.adaptive(
+              value: value,
+              onChanged: (value) {
+                darkMode.value = !darkMode.value;
+              },
+              title: Text(
+                  "Change DarkMode (this ${value ? "Dark" : "SyS"}Mode)"), // AnimatedBuilder() 로 동일하게 구현가능하나, builder: 에서 "value" 값을 받을 수 없어 Text 구문에 활용할 수 없다.
+              subtitle: const Text("Dark mode present"),
+            ),
+          ),
+          SwitchListTile.adaptive(
             // ".adaptive" 는 각 운영체제별 머터리얼 디자인으로 표시한다( ex, ios 버튼 또는 android 버튼)
-            value: _notification,
-            onChanged: _onNoficationChange,
+            value: false,
+            onChanged: (value) {},
             title: const Text("Enable notifications"),
             subtitle: const Text("sub title"),
           ),
           CheckboxListTile(
             activeColor: Colors.black,
             checkColor: Colors.amber,
-            value: _notification,
-            onChanged: _onNoficationChange,
+            value: false,
+            onChanged: (value) {},
             title: const Text("Enable notifications"),
           ),
           ListTile(
@@ -55,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               if (kDebugMode) {
                 print(date);
               }
-              if (!mounted) return;
+
               final time = await showTimePicker(
                 context: context,
                 initialTime: TimeOfDay.now(),
@@ -63,7 +83,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               if (kDebugMode) {
                 print(time);
               }
-              if (!mounted) return;
+
               final booking = await showDateRangePicker(
                 context: context,
                 firstDate: DateTime(1980),
@@ -99,7 +119,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       child: const Text("No"),
                     ),
                     CupertinoDialogAction(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () {
+                        ref.read(authRepo).signOut();
+                        context.go("/");
+                      },
                       isDestructiveAction: true,
                       child: const Text("Yes"),
                     ),
