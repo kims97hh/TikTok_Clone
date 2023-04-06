@@ -1,18 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
-import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
+import 'package:tiktok_clone/features/authentification/view_models/signup_view_model.dart';
 import 'form_button.dart';
 
-class BirthdayScreen extends StatefulWidget {
+class BirthdayScreen extends ConsumerStatefulWidget {
   const BirthdayScreen({super.key});
 
   @override
-  State<BirthdayScreen> createState() => _BirthdayScreenState();
+  ConsumerState<BirthdayScreen> createState() => _BirthdayScreenState();
 }
 
-class _BirthdayScreenState extends State<BirthdayScreen> {
+class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
   final TextEditingController _birthdayController = TextEditingController();
   int ageLimitYear = 12; //연령제한
 
@@ -36,12 +37,15 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
   }
 
   void _onNextTap() {
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(
-        builder: (context) => const InterestsScreen(),
-      ),
-      (route) => false,
-    );
+    final String textDate =
+        _birthdayController.value.toString().split("┤")[1].split("├")[0];
+    final state = ref.read(signUpForm.notifier).state;
+    ref.read(signUpForm.notifier).state = {
+      ...state, // final state 에 모든 list 와 ,~
+      "bio": textDate,
+    };
+    ref.read(signUpProvider.notifier).signUp(context);
+    // context.goNamed(InterestsScreen.routeName);
   }
 
   void _setTextFieldDate(DateTime date) {
@@ -105,19 +109,21 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
             Gaps.v16,
             GestureDetector(
               onTap: _onNextTap,
-              child: const FormButton(disable: false),
+              child: FormButton(
+                  disable: ref
+                      .watch(signUpProvider)
+                      .isLoading), // 비활성조건,=입력값이 조건에 못 미치거나, firebase 작업중이거나
+            ),
+            Gaps.v20,
+            SizedBox(
+              height: 400,
+              child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  maximumDate: initialdate,
+                  initialDateTime: initialdate,
+                  onDateTimeChanged: _setTextFieldDate),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: SizedBox(
-          height: 300,
-          child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              maximumDate: initialdate,
-              initialDateTime: initialdate,
-              onDateTimeChanged: _setTextFieldDate),
         ),
       ),
     );

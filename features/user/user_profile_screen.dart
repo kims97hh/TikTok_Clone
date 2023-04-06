@@ -37,6 +37,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           initialIndex: widget.tab == "likes" ? 1 : 0,
           length: 2,
           child: NestedScrollView(
+            physics:
+                const BouncingScrollPhysics(), // SliverAppBar(stretch: stretchMode.. ) 의 기능 활성화 Android 한정
             headerSliverBuilder: (context, innerBoxIsScrolled) {
               return [
                 SliverAppBar(
