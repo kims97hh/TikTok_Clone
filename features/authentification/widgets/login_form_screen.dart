@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tiktok_clone/constants/gaps.dart';
 import 'package:tiktok_clone/constants/sizes.dart';
+import 'package:tiktok_clone/features/authentification/repos/login_view_model.dart';
 import 'package:tiktok_clone/features/authentification/widgets/form_button.dart';
-import 'package:tiktok_clone/features/onboarding/interests_screen.dart';
 
-class LoginFormScareen extends StatefulWidget {
+class LoginFormScareen extends ConsumerStatefulWidget {
   const LoginFormScareen({super.key});
 
   @override
-  State<LoginFormScareen> createState() => _LoginFormScareenState();
+  ConsumerState<LoginFormScareen> createState() => _LoginFormScareenState();
 }
 
-class _LoginFormScareenState extends State<LoginFormScareen> {
+class _LoginFormScareenState extends ConsumerState<LoginFormScareen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Map<String, String> formData = {};
@@ -20,12 +21,13 @@ class _LoginFormScareenState extends State<LoginFormScareen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(
-            builder: (context) => const InterestsScreen(),
-          ),
-          (route) => false,
-        );
+        ref.read(loginProvider.notifier).login(
+              formData["email"]!,
+              formData["password"]!,
+              context,
+            );
+        // String? 으로 표시된 err는 null 일수 있음을 표시하므로 "!" 를 붙여주어 값이 있음을 알려준다.
+        // context.goNamed(InterestsScreen.routeName);
       }
     }
   }
@@ -94,7 +96,9 @@ class _LoginFormScareenState extends State<LoginFormScareen> {
               Gaps.v28,
               GestureDetector(
                 onTap: _onSubmitTab,
-                child: const FormButton(disable: false),
+                child: FormButton(
+                  disable: ref.watch(loginProvider).isLoading,
+                ),
               ),
             ],
           ),
