@@ -42,7 +42,7 @@ class _BirthdayScreenState extends ConsumerState<BirthdayScreen> {
     final state = ref.read(signUpForm.notifier).state;
     ref.read(signUpForm.notifier).state = {
       ...state, // final state 에 모든 list 와 ,~
-      "bio": textDate,
+      "birth": textDate,
     };
     ref.read(signUpProvider.notifier).signUp(context);
     // context.goNamed(InterestsScreen.routeName);
