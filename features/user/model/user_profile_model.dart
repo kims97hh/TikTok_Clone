@@ -10,6 +10,7 @@ class UserProfileModel {
   final String bio;
   final String link;
   final bool hasAvatar;
+
   final String birth;
 
   UserProfileModel({
@@ -22,14 +23,17 @@ class UserProfileModel {
     required this.birth,
   });
 
+
   UserProfileModel.empty()
       : uid = "",
         email = "",
         name = "",
         bio = "",
         link = "",
+
         hasAvatar = false,
         birth = "";
+
 
   UserProfileModel.fromJson(Map<String, dynamic> json)
       : uid = json["uid"],
@@ -37,6 +41,7 @@ class UserProfileModel {
         name = json["name"],
         bio = json["bio"],
         link = json["link"],
+
         hasAvatar = json["hasAvatar"],
         birth = json["birth"];
 
@@ -48,7 +53,9 @@ class UserProfileModel {
       "name": name,
       "bio": bio,
       "link": link,
+
       "birth": birth,
+
     };
   }
 
@@ -60,6 +67,7 @@ class UserProfileModel {
     String? bio,
     String? link,
     bool? hasAvatar,
+
     String? birth,
   }) {
     return UserProfileModel(
@@ -73,5 +81,6 @@ class UserProfileModel {
         birth: birth ?? this.birth);
 
         // 이것은 기존 정보를 [수정]할 수 없으므로(db) 새로운 데이터를 만들고 현존하는 정보가 있으면 현재의 정보를 없으면 기존의 정보를 대입한후, 다시 전체를 올려 덮어 씌우게 된다.
+
   }
 }

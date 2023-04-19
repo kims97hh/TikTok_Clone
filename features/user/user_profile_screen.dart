@@ -22,6 +22,7 @@ class UserProfileScreen extends ConsumerStatefulWidget {
   ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
+
 class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
     with SingleTickerProviderStateMixin {
   bool _showBarrier = false;
@@ -116,6 +117,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
 
 // 여기까지 animationscreen 관련내용
 
+
   void _onGearPressed() {
     Navigator.of(context).push(
       MaterialPageRoute(
@@ -137,6 +139,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
           ),
           data: (data) => Scaffold(
             backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+
             body: Stack(
               children: [
                 SafeArea(
@@ -358,10 +361,12 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                                         ),
                                       ),
                                     ],
+
                                   ),
                                 ),
                               ],
                             ),
+
                           ),
                           const Center(
                             child: Text("Page two"),
@@ -478,6 +483,7 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                                         }
                                         return null;
                                       },
+
                                     ),
                                   ),
                                   IconButton(
@@ -807,11 +813,13 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen>
                             ],
                           ),
                         ),
+
                       ],
                     ),
                   ),
                 ),
               ],
+
             ),
           ),
         );
