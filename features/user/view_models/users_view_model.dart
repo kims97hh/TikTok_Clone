@@ -46,7 +46,9 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
       name: form["name"] ?? // .updateDisplayName 이 작동되지 않아 어쩔수 없다
           credential.user!.displayName ??
           "Anon",
+
       birth: form["birth"] ?? "undefined",
+
     );
     await _usersRepository.createProfile(profile);
     // await credential.user!.updateDisplayName(form["name"]); // 프로파일 생성후 업데이트 인데도 작동 안한다!
@@ -56,6 +58,7 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
   Future<void> onAvatarUpload() async {
     if (state.value == null) return;
     state = AsyncValue.data(state.value!.copyWith(hasAvatar: true));
+
     // 데이터를 수정할 수 없으므로 기존 데이터를 복사한후 새로 만들어야 한다.
     await _usersRepository.updateUser(state.value!.uid, {"hasAvatar": true});
   }
@@ -67,6 +70,7 @@ class UsersViewModel extends AsyncNotifier<UserProfileModel> {
     await _usersRepository.updateUser(state.value!.uid, data);
     // 이곳 구현(setInputValue() 에서 데이터를 수신받아 넣는다. 형태는 list? map? {})
   }
+
 }
 
 final usersProvider = AsyncNotifierProvider<UsersViewModel, UserProfileModel>(
