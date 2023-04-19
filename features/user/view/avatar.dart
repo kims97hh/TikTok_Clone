@@ -49,7 +49,10 @@ class Avatar extends ConsumerWidget {
               radius: 50,
               foregroundImage: hasAvatar
                   ? NetworkImage(
-                      "https://firebasestorage.googleapis.com/v0/b/tiktok-clone-kims97hh.appspot.com/o/avatars%2F$uid?alt=media&캐쉬방지용=${DateTime.now().toString()}") // 캐쉬방지용은, 파일이름이 동일(link이름이 동일)하므로 내부cache로 인하여 다시 읽어오지 않아 Avatar 사진 변경이 이루어지지 않으므로 link 를 계속 변경하여 이를 방지한다
+
+                      "https://firebasestorage.googleapis.com/v0/b/tiktok-clone-kims97hh.appspot.com/o/avatars%2F$uid?alt=media&캐쉬방지용=${DateTime.now().toString()}")
+                  // 캐쉬방지용은, 파일이름이 동일(link이름이 동일)하므로 내부cache로 인하여 다시 읽어오지 않아 Avatar 사진 변경이 이루어지지 않으므로 link 를 계속 변경하여 이를 방지한다
+
                   : null,
               child: Text(name),
             ),

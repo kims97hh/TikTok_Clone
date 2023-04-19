@@ -11,13 +11,18 @@ class UserProfileModel {
   final String link;
   final bool hasAvatar;
 
-  UserProfileModel(
-      {required this.uid,
-      required this.email,
-      required this.name,
-      required this.bio,
-      required this.link,
-      required this.hasAvatar});
+  final String birth;
+
+  UserProfileModel({
+    required this.uid,
+    required this.email,
+    required this.name,
+    required this.bio,
+    required this.link,
+    required this.hasAvatar,
+    required this.birth,
+  });
+
 
   UserProfileModel.empty()
       : uid = "",
@@ -25,7 +30,10 @@ class UserProfileModel {
         name = "",
         bio = "",
         link = "",
-        hasAvatar = false;
+
+        hasAvatar = false,
+        birth = "";
+
 
   UserProfileModel.fromJson(Map<String, dynamic> json)
       : uid = json["uid"],
@@ -33,7 +41,9 @@ class UserProfileModel {
         name = json["name"],
         bio = json["bio"],
         link = json["link"],
-        hasAvatar = json["hasAvatar"];
+
+        hasAvatar = json["hasAvatar"],
+        birth = json["birth"];
 
   // firebase 에 _db 전송을 json 형식으로 변환하기 위함
   Map<String, String> toJson() {
@@ -43,6 +53,9 @@ class UserProfileModel {
       "name": name,
       "bio": bio,
       "link": link,
+
+      "birth": birth,
+
     };
   }
 
@@ -54,15 +67,20 @@ class UserProfileModel {
     String? bio,
     String? link,
     bool? hasAvatar,
+
+    String? birth,
   }) {
     return UserProfileModel(
-      // .copyWith 에서 받아온 정보가 null 이면 기본정보(this.~) 를 사용 즉, UserProfileModel.copyWith() => UserProfileModel 에 null 인경우만 반영, new 인경우에도 반영할 수 있을듯 (update?)
-      uid: uid ?? this.uid,
-      email: email ?? this.email,
-      name: name ?? this.name,
-      bio: bio ?? this.bio,
-      link: link ?? this.link,
-      hasAvatar: hasAvatar ?? this.hasAvatar,
-    );
+        // .copyWith 에서 받아온 정보가 null 이면 기본정보(this.~) 를 사용 즉, UserProfileModel.copyWith() => UserProfileModel 에 null 인경우만 반영, new 인경우에도 반영할 수 있을듯 (update?)
+        uid: uid ?? this.uid,
+        email: email ?? this.email,
+        name: name ?? this.name,
+        bio: bio ?? this.bio,
+        link: link ?? this.link,
+        hasAvatar: hasAvatar ?? this.hasAvatar,
+        birth: birth ?? this.birth);
+
+        // 이것은 기존 정보를 [수정]할 수 없으므로(db) 새로운 데이터를 만들고 현존하는 정보가 있으면 현재의 정보를 없으면 기존의 정보를 대입한후, 다시 전체를 올려 덮어 씌우게 된다.
+
   }
 }

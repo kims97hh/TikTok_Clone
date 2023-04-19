@@ -36,12 +36,16 @@ final avatarProvider = AsyncNotifierProvider<AvatarViewModel, void>(
 /*
 (MVVM 아키텍쳐구성을 위한 folder 설명)
 model : 데이터(외/내부) 오가는 변수, 형식 정의
-widgets) : 메인 프레임, 기본적인 App의 화면 UI, 사용자화면, view등의 데이터를 오가지 않는 대부분의 widget들
-view : widgets중 데이터를 조작하는 widget, 해당 파트에 대한 UI, 사용자화면(즉 데이터 변경시 전체를 rebuild 하지 않고 해당 부분만 rebuild 하여 효율성 극대화)
-viewmodel : view 에서 받은 데이터를 model을 이용하여 외부로 전달을 위한 사전작업(repository 전달전), 외부1에서 받은 데이터를 model을 이용하여 view 로 전달 (firebase등, 또는 API 정보전달등), 즉 로딩 상태를 거쳐 성공 또는 실패(err) 상태로 변경하는 것
-repository(repos) : 외부(firebase등)에 실제 데이터를 전송(저장), 읽기등
 
-상관관계도
+
+[widgets] : 메인 프레임, 기본적인 App의 화면 UI, 사용자화면, view등의 데이터를 오가지 않는 대부분의 widget들
+view : widgets중 데이터를 조작하는 widget, 해당 파트에 대한 UI, 사용자화면(즉 데이터 변경시 전체를 rebuild 하지 않고 해당 부분만 rebuild 하여 효율성 극대화)
+
+viewmodel : view 에서 받은 데이터를 model을 이용하여 외부로 전달을 위한 사전작업(repository 전달전), 외부1에서 받은 데이터를 model을 이용하여 view 로 전달 (firebase등, 또는 API 정보전달등), 즉 로딩 상태를 거쳐 성공 또는 실패(err) 상태로 변경하는 것
+[repository(repos)] : 외부(firebase등)에 실제 데이터를 전송(저장), 읽기등
+
+*상관관계도*
+
 [widgets <> view] <-> [viewmodel <> repository(repos)] <-> model
 
 이런 구조의 아키텍쳐는 향후 유지보수성, 성능에 유리하다.
